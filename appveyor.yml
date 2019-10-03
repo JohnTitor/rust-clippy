@@ -12,6 +12,7 @@ branches:
     only:
       - auto
       - try
+      - try-fmt
 
 install:
     - curl -sSf -o rustup-init.exe https://win.rustup.rs/

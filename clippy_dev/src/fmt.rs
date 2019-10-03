@@ -135,12 +135,12 @@ fn exec(
 }
 
 fn cargo_fmt(context: &FmtContext, path: &Path) -> Result<bool, CliError> {
-    let mut args = vec!["+nightly", "fmt", "--all"];
+    let mut args = vec!["fmt", "--all"];
     if context.check {
         args.push("--");
         args.push("--check");
     }
-    let success = exec(context, "cargo", path, &args)?;
+    let success = exec(context, "cargo +nightly", path, &args)?;
 
     Ok(success)
 }
