@@ -1,0 +1,34 @@
+error: unknown clippy lint: clippy::match_sa_ruf
+  --> $DIR/unknown_clippy_lints_fixable.rs:7:8
+   |
+LL | #[warn(clippy::match_sa_ruf)]
+   |        ^^^^^^^^^^^^^^^^^^^^ help: did you mean: `clippy::match_as_ref`
+   |
+   = note: `-D clippy::unknown-clippy-lints` implied by `-D warnings`
+
+error: unknown clippy lint: clippy::if_not_els
+  --> $DIR/unknown_clippy_lints_fixable.rs:8:8
+   |
+LL | #[warn(clippy::if_not_els)]
+   |        ^^^^^^^^^^^^^^^^^^ help: did you mean: `clippy::if_not_else`
+
+error: unknown clippy lint: clippy::inherent_to_strin_shadew_display
+  --> $DIR/unknown_clippy_lints_fixable.rs:9:8
+   |
+LL | #[warn(clippy::inherent_to_strin_shadew_display)]
+   |        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: did you mean: `clippy::inherent_to_string_shadow_display`
+
+error: unknown clippy lint: clippy::Unit_Cm
+  --> $DIR/unknown_clippy_lints_fixable.rs:11:8
+   |
+LL | #[warn(clippy::Unit_Cm)]
+   |        ^^^^^^^^^^^^^^^ help: did you mean: `clippy::unit_cmp`
+
+error: unknown clippy lint: clippy::All
+  --> $DIR/unknown_clippy_lints_fixable.rs:3:10
+   |
+LL | #![allow(clippy::All)]
+   |          ^^^^^^^^^^^ help: lowercase the lint name: `clippy::all`
+
+error: aborting due to 5 previous errors
+

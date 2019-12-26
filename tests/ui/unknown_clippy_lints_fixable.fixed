@@ -1,0 +1,12 @@
+// run-rustfix
+
+#![allow(clippy::all)]
+#![warn(clippy::pedantic)]
+
+// check if suggesting similar lint
+#[warn(clippy::match_as_ref)]
+#[warn(clippy::if_not_else)]
+#[warn(clippy::inherent_to_string_shadow_display)]
+// check if suggesting similar lowercase lint
+#[warn(clippy::unit_cmp)]
+fn main() {}

@@ -1,16 +1,34 @@
-error: unknown clippy lint: clippy::if_not_els
+error: unknown clippy lint: clippy::dead_cod
   --> $DIR/unknown_clippy_lints.rs:4:8
    |
-LL | #[warn(clippy::if_not_els)]
-   |        ^^^^^^^^^^^^^^^^^^
+LL | #[warn(clippy::dead_cod)] // check if not suggesting similar rustc lint
+   |        ^^^^^^^^^^^^^^^^
    |
    = note: `-D clippy::unknown-clippy-lints` implied by `-D warnings`
+
+error: unknown clippy lint: clippy::Dead_Cod
+  --> $DIR/unknown_clippy_lints.rs:5:8
+   |
+LL | #[warn(clippy::Dead_Cod)] // check if suggesting lowercase
+   |        ^^^^^^^^^^^^^^^^ help: lowercase the lint name: `clippy::dead_cod`
+
+error: unknown clippy lint: clippy::if_not_els
+  --> $DIR/unknown_clippy_lints.rs:6:8
+   |
+LL | #[warn(clippy::if_not_els)] // check if suggesting similar lint
+   |        ^^^^^^^^^^^^^^^^^^ help: did you mean: `clippy::if_not_else`
+
+error: unknown clippy lint: clippy::Unit_Cm
+  --> $DIR/unknown_clippy_lints.rs:7:8
+   |
+LL | #[warn(clippy::Unit_Cm)] // check if suggesting similar lowercase lint
+   |        ^^^^^^^^^^^^^^^ help: did you mean: `clippy::unit_cmp`
 
 error: unknown clippy lint: clippy::All
   --> $DIR/unknown_clippy_lints.rs:1:10
    |
 LL | #![allow(clippy::All)]
-   |          ^^^^^^^^^^^ help: lowercase the lint name: `all`
+   |          ^^^^^^^^^^^ help: lowercase the lint name: `clippy::all`
 
-error: aborting due to 2 previous errors
+error: aborting due to 5 previous errors
 
