@@ -154,6 +154,7 @@ macro_rules! declare_clippy_lint {
 }
 
 mod consts;
+mod lintlist;
 #[macro_use]
 mod utils;
 

@@ -18,6 +18,7 @@ use rustc_session::declare_tool_lint;
 use semver::Version;
 use syntax::ast::{AttrKind, AttrStyle, Attribute, Lit, LitKind, MetaItemKind, NestedMetaItem};
 use syntax::source_map::Span;
+use syntax::util::lev_distance::find_best_match_for_name;
 use syntax_pos::symbol::Symbol;
 
 declare_clippy_lint! {
@@ -310,6 +311,7 @@ impl<'a, 'tcx> LateLintPass<'a, 'tcx> for Attributes {
 
 #[allow(clippy::single_match_else)]
 fn check_clippy_lint_names(cx: &LateContext<'_, '_>, items: &[NestedMetaItem]) {
+    use crate::lintlist::ALL_LINTS_NAMES;
     let lint_store = cx.lints();
     for lint in items {
         if_chain! {
@@ -329,24 +331,29 @@ fn check_clippy_lint_names(cx: &LateContext<'_, '_>, items: &[NestedMetaItem]) {
                     lint.span(),
                     &format!("unknown clippy lint: clippy::{}", name),
                     |db| {
-                        if name.as_str().chars().any(char::is_uppercase) {
-                            let name_lower = name.as_str().to_lowercase();
-                            match lint_store.check_lint_name(
-                                &name_lower,
-                                Some(tool_name.name)
-                            ) {
-                                // FIXME: can we suggest similar lint names here?
-                                // https://github.com/rust-lang/rust/pull/56992
-                                CheckLintNameResult::NoLint(None) => (),
-                                _ => {
-                                    db.span_suggestion(
-                                        lint.span(),
-                                        "lowercase the lint name",
-                                        name_lower,
-                                        Applicability::MaybeIncorrect,
-                                    );
-                                }
-                            }
+                        let lower_name = name.as_str().to_lowercase();
+                        let symbols = ALL_LINTS_NAMES.iter().map(
+                            |l| Symbol::intern(&l)
+                        ).collect::<Vec<_>>();
+                        let sugg = find_best_match_for_name(
+                            symbols.iter(),
+                            &lower_name,
+                            None,
+                        );
+                        if name.as_str().chars().any(char::is_uppercase) && sugg.is_none() {
+                            db.span_suggestion(
+                                lint.span(),
+                                "lowercase the lint name",
+                                format!("clippy::{}", lower_name),
+                                Applicability::MaybeIncorrect,
+                            );
+                        } else if let Some(sugg) = sugg {
+                            db.span_suggestion(
+                                lint.span(),
+                                "did you mean",
+                                format!("clippy::{}", sugg.to_string()),
+                                Applicability::MachineApplicable,
+                            );
                         }
                     }
                 );
