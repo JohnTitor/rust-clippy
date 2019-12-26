@@ -165,6 +165,19 @@ pub fn gen_register_lint_list(lints: &[Lint]) -> Vec<String> {
     inner
 }
 
+#[must_use]
+pub fn gen_all_lints_names(lints: &[Lint], len: usize) -> Vec<String> {
+    let pre = format!("pub(crate) const ALL_LINTS_NAMES: [&str; {}] = [", len);
+    let post = "];".to_string();
+    let mut inner = lints
+        .iter()
+        .map(|l| format!("    \"{}\",", l.name))
+        .collect::<Vec<String>>();
+    inner.insert(0, pre);
+    inner.push(post);
+    inner
+}
+
 /// Gathers all files in `src/clippy_lints` and gathers all lints inside
 pub fn gather_all() -> impl Iterator<Item = Lint> {
     lint_files().flat_map(|f| gather_from_file(&f))

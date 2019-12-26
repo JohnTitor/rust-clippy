@@ -137,6 +137,16 @@ fn update_lints(update_mode: &UpdateMode) {
     .changed;
 
     file_change |= replace_region_in_file(
+        "../clippy_lints/src/lintlist/mod.rs",
+        "begin lints names",
+        "end lints names",
+        false,
+        update_mode == &UpdateMode::Change,
+        || gen_all_lints_names(&sorted_usable_lints, sorted_usable_lints.len()),
+    )
+    .changed;
+
+    file_change |= replace_region_in_file(
         "../README.md",
         r#"\[There are \d+ lints included in this crate!\]\(https://rust-lang.github.io/rust-clippy/master/index.html\)"#,
         "",
