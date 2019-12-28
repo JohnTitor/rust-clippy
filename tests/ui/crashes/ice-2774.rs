@@ -1,4 +1,5 @@
 // run-pass
+// compile-flags: -C debug_assertions=yes
 
 use std::collections::HashSet;
 
