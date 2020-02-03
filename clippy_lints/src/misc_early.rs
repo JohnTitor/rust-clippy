@@ -488,7 +488,7 @@ impl MiscEarlyLints {
                 LitIntType::Unsuffixed => "",
             };
 
-            let maybe_last_sep_idx = lit_snip.len() - suffix.len() - 1;
+            let maybe_last_sep_idx = lit_snip.len().saturating_sub(suffix.len() + 1);
             // Do not lint when literal is unsuffixed.
             if !suffix.is_empty() && lit_snip.as_bytes()[maybe_last_sep_idx] != b'_' {
                 span_lint_and_sugg(
@@ -502,7 +502,7 @@ impl MiscEarlyLints {
                 );
             }
 
-            if lit_snip.starts_with("0x") {
+            if lit_snip.starts_with("0x") && maybe_last_sep_idx >= 3 {
                 let mut seen = (false, false);
                 for ch in lit_snip.as_bytes()[2..=maybe_last_sep_idx].iter() {
                     match ch {
@@ -546,7 +546,7 @@ impl MiscEarlyLints {
             }
         } else if let LitKind::Float(_, LitFloatType::Suffixed(float_ty)) = lit.kind {
             let suffix = float_ty.name_str();
-            let maybe_last_sep_idx = lit_snip.len() - suffix.len() - 1;
+            let maybe_last_sep_idx = lit_snip.len().saturating_sub(suffix.len() + 1);
             if lit_snip.as_bytes()[maybe_last_sep_idx] != b'_' {
                 span_lint_and_sugg(
                     cx,
