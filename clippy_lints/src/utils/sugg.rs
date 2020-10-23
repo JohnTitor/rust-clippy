@@ -542,6 +542,10 @@ fn astbinop2assignop(op: ast::BinOp) -> AssocOp {
 /// Returns the indentation before `span` if there are nothing but `[ \t]`
 /// before it on its line.
 fn indentation<T: LintContext>(cx: &T, span: Span) -> Option<String> {
+    // We cannot get any lines if the source is unavailable.
+    if !cx.sess().source_map().ensure_source_file_source_present(lo.file.clone()) {
+        return None;
+    }
     let lo = cx.sess().source_map().lookup_char_pos(span.lo());
     lo.file
         .get_line(lo.line - 1 /* line numbers in `Loc` are 1-based */)
